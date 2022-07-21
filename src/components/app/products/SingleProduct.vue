@@ -1,15 +1,26 @@
 <script setup lang="ts">
 import { computed, defineProps } from "vue";
 import { ProductInterface } from "@/core/interfaces/Product.interface";
+import { useStore } from "vuex";
 
 interface PropsInterface {
   product: ProductInterface;
 }
 
+const store = useStore();
+
 const props = defineProps<PropsInterface>();
 
 const getRating = computed(
   () => `(${props.product.rating.rate}) ${props.product.rating.count}`
+);
+
+const addToFavorites = () => {
+  store.dispatch("favorites/addToFavorites", props.product);
+};
+
+const checkFavoriteItem = computed(() =>
+  store.getters["favorites/getFavorites"].includes(props.product)
 );
 </script>
 <template>
@@ -46,8 +57,10 @@ const getRating = computed(
     </v-card-text>
     <v-divider class="mx-4"></v-divider>
     <v-card-actions>
-      <v-btn icon color="red">
-        <v-icon>mdi-heart</v-icon>
+      <v-btn icon color="red" @click="addToFavorites">
+        <v-icon>{{
+          !checkFavoriteItem ? "mdi-heart-plus" : "mdi-heart-remove"
+        }}</v-icon>
       </v-btn>
       <v-spacer />
       <v-btn icon color="primary">

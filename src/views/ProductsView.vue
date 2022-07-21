@@ -43,7 +43,7 @@ onMounted(() => {
 
 <template>
   <v-container fluid>
-    <v-row justify="between" align="center">
+    <v-row justify="space-between" align="center">
       <v-col cols="12" sm="8" md="8">
         <v-btn-toggle v-model="categoryModel" mandatory>
           <template v-if="categories.length">

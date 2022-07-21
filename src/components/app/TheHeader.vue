@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { links } from "@/core/enums/links.enums";
+import { computed } from "@vue/runtime-core";
+import { useStore } from "vuex";
+const store = useStore();
+
+const info = computed(() => store.getters["user/getUser"]);
 </script>
 <template>
   <v-app-bar elevation="2" app inverted-scroll>
@@ -20,6 +25,12 @@ import { links } from "@/core/enums/links.enums";
           </router-link>
         </v-btn>
       </template>
+    </template>
+    <template v-if="info">
+      <div class="d-flex">
+        <v-icon color="amber">mdi-account</v-icon>
+        <p class="text-amber">{{ info.user }}</p>
+      </div>
     </template>
   </v-app-bar>
 </template>
