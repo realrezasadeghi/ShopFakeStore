@@ -1,11 +1,17 @@
 <script setup lang="ts">
+import { ref } from "vue";
+import type { Ref } from "vue";
 import TheHeader from "@/components/app/TheHeader.vue";
 import TheFooter from "@/components/app/TheFooter.vue";
+import TheDrawer from "@/components/app/TheDrawer.vue";
+
+const drawer: Ref<boolean> = ref(false);
 </script>
 
 <template>
   <v-app>
-    <the-header />
+    <the-header @drawer="(val) => (drawer = val)" />
+    <the-drawer :drawer-value="drawer" />
     <v-main>
       <v-container>
         <router-view v-slot="{ Component, route }">

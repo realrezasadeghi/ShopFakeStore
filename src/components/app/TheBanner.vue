@@ -29,7 +29,11 @@ onMounted(() => {
                     aspect-ratio="1.8"
                   />
                 </v-col>
-                <v-col cols="12" md="7">
+                <v-col
+                  cols="12"
+                  md="7"
+                  :class="[{ 'text-center': $vuetify.display.smAndDown }]"
+                >
                   <article>
                     <router-link
                       :to="`/products/${item.id}`"
@@ -37,7 +41,9 @@ onMounted(() => {
                     >
                       <h3>{{ item.title }}</h3>
                     </router-link>
-                    <p>{{ item.description }}</p>
+                    <p v-if="$vuetify.display.mdAndUp">
+                      {{ item.description }}
+                    </p>
                   </article>
                 </v-col>
               </v-row>

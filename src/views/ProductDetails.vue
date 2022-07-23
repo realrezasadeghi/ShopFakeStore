@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { onMounted, watch } from "@vue/runtime-core";
+import { computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import {
   useGetProductByCategory,
   useGetProductById,
 } from "@/composables/product.composable";
 import ProductList from "@/components/app/products/ProductList.vue";
+import { useStore } from "vuex";
 const { params } = useRoute();
 const { data, loading, fetch } = useGetProductById();
 const {
@@ -13,6 +14,16 @@ const {
   loading: loadingProducts,
   fetch: fetchProducts,
 } = useGetProductByCategory();
+
+const store = useStore();
+
+const checkFavoriteItem = computed(() =>
+  store.getters["favorites/checkIsFavorite"](data.value)
+);
+
+const addToFavorites = () => {
+  store.dispatch("favorites/addToFavorites", data.value);
+};
 
 onMounted(() => {
   const id = params.id as unknown as number;
@@ -69,8 +80,17 @@ watch(data, () => {
                     </v-btn>
                   </v-col>
                   <v-col cols="6">
-                    <v-btn block elevation="0" color="red">
-                      Add to favorite
+                    <v-btn
+                      block
+                      elevation="0"
+                      color="red"
+                      @click.stop="addToFavorites"
+                    >
+                      {{
+                        checkFavoriteItem
+                          ? "Added to favorite"
+                          : "Add to favorite"
+                      }}
                     </v-btn>
                   </v-col>
                 </v-row>

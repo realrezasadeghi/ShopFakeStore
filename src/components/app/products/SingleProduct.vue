@@ -19,6 +19,10 @@ const addToFavorites = () => {
   store.dispatch("favorites/addToFavorites", props.product);
 };
 
+const addToCart = () => {
+  store.dispatch("cart/addToCart", props.product);
+};
+
 const checkFavoriteItem = computed(() =>
   store.getters["favorites/getFavorites"].includes(props.product)
 );
@@ -63,7 +67,7 @@ const checkFavoriteItem = computed(() =>
         }}</v-icon>
       </v-btn>
       <v-spacer />
-      <v-btn icon color="primary">
+      <v-btn icon color="primary" @click="addToCart">
         <v-icon>mdi-cart</v-icon>
       </v-btn>
     </v-card-actions>

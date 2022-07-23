@@ -45,11 +45,23 @@ onMounted(() => {
   <v-container fluid>
     <v-row justify="space-between" align="center">
       <v-col cols="12" sm="8" md="8">
-        <v-btn-toggle v-model="categoryModel" mandatory>
-          <template v-if="categories.length">
-            <v-btn v-for="item in categories" :key="item"> {{ item }}</v-btn>
-          </template>
-        </v-btn-toggle>
+        <v-slide-group v-model="categoryModel" class="elevation-0" show-arrows>
+          <v-slide-group-item
+            v-for="item in categories"
+            :key="item"
+            v-slot="{ active, toggle }"
+          >
+            <v-btn
+              class="ma-2"
+              :input-value="active"
+              depressed
+              rounded
+              @click="toggle"
+            >
+              {{ item }}
+            </v-btn>
+          </v-slide-group-item>
+        </v-slide-group>
       </v-col>
       <v-col cols="12" sm="" md="4">
         <v-btn

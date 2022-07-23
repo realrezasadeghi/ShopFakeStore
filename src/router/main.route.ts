@@ -31,4 +31,9 @@ export const mainRoutes: RouteRecordRaw[] = [
     name: "Cart",
     component: () => import("@/views/CartView.vue"),
   },
+  {
+    path: "profile",
+    name: "Profile",
+    component: () => import("@/views/ProfileView.vue"),
+  },
 ];

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { UserLoginInterface } from "@/core/interfaces/User.interface";
-import { useLogin } from "@/composables/user.composable";
+import { useLogin } from "@/composables/auth.composable";
 import { decodeToken } from "@/utils/decodeToken";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";

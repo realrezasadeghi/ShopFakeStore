@@ -1,52 +1,33 @@
-import {
-  UserLoginInterfaceModel,
-  UserLoginInterfaceRestul,
-} from "@/api/models/User.interface";
-import UserService from "@/api/service/User.service";
-import ApiFactory from "@/core/factory/ApiFactory";
-import { ProblemDetailsInterface } from "@/core/interfaces/ProblemDetails.interface";
 import { AxiosError, AxiosResponse } from "axios";
 import { ref } from "vue";
+import { UserInterfaceModel } from "@/api/models/User.interface";
+import UserService from "@/api/service/User.service";
+import ApiFactory from "@/core/factory/ApiFactory";
 
 const userService = ApiFactory.get("UserService") as UserService;
 
-export const useLogin = () => {
-  const token = ref<string | null>(null);
+export const useGetAllUser = () => {
+  const data = ref<UserInterfaceModel[]>([]);
   const loading = ref<boolean>(false);
-  const error = ref<AxiosError | null>(null);
+  const error = ref<AxiosError>();
 
-  const submitLogin = async (body: UserLoginInterfaceModel) => {
+  const fetch = async () => {
     loading.value = true;
-
-    return new Promise((resolve, reject) => {
-      userService
-        .login(body)
-        .then(
-          (
-            response:
-              | AxiosResponse<UserLoginInterfaceRestul>
-              | AxiosError<ProblemDetailsInterface>
-          ) => {
-            if ("data" in response) {
-              token.value = response.data.token;
-              resolve(response.data);
-            }
-          }
-        )
-        .catch((err: AxiosError) => {
-          error.value = err;
-          reject(err);
-        })
-        .finally(() => {
-          loading.value = false;
-        });
-    });
+    try {
+      const { data: result } =
+        (await userService.getAllUser()) as AxiosResponse<UserInterfaceModel[]>;
+      data.value = result;
+    } catch (err) {
+      error.value = err as AxiosError;
+    } finally {
+      loading.value = false;
+    }
   };
 
   return {
-    token,
+    data,
     loading,
     error,
-    submitLogin,
+    fetch,
   };
 };
