@@ -2,12 +2,14 @@
 import { computed, defineProps } from "vue";
 import { ProductInterface } from "@/core/interfaces/Product.interface";
 import { useStore } from "vuex";
+import { useToast } from "vue-toastification";
 
 interface PropsInterface {
   product: ProductInterface;
 }
 
 const store = useStore();
+const toast = useToast();
 
 const props = defineProps<PropsInterface>();
 
@@ -21,6 +23,7 @@ const addToFavorites = () => {
 
 const addToCart = () => {
   store.dispatch("cart/addToCart", props.product);
+  toast.success(`${props.product.title} successfull add to cart`);
 };
 
 const checkFavoriteItem = computed(() =>

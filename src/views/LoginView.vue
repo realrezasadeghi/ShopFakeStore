@@ -5,15 +5,18 @@ import { useLogin } from "@/composables/auth.composable";
 import { decodeToken } from "@/utils/decodeToken";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 
 const { token, loading, submitLogin } = useLogin();
 
 const store = useStore();
 const router = useRouter();
+const toast = useToast();
 
 const formLogin = reactive<UserLoginInterface>({ username: "", password: "" });
 const login = async () => {
   await submitLogin(formLogin);
+  toast.success("Successfull login");
   store.dispatch("user/addUser", decodeToken(token.value as string));
   localStorage.setItem("token", token.value as string);
   router.replace("/");

@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, reactive, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useGetAllUser } from "@/composables/user.composable";
 import { UserInterface } from "@/core/interfaces/User.interface";
+import { GoogleMap, Marker } from "vue3-google-map";
+
 const { data, loading, fetch } = useGetAllUser();
 
 const store = useStore();
@@ -11,6 +13,13 @@ const userInfo = computed(() => store.getters["user/getUser"]);
 const fullname = computed(
   () => user.value?.name.firstname + " " + user.value?.name.lastname
 );
+const apiKey = process.env.VUE_APP_API_KEY;
+const show = ref<boolean>(false);
+
+const position = reactive({
+  lat: user.value?.address.geolocation.lat,
+  lng: user.value?.address.geolocation.long,
+});
 
 onMounted(() => {
   fetch();
@@ -45,7 +54,7 @@ watch(data, () => {
             <p class="text-grey">info</p>
             <div class="d-flex justify-space-between align-center">
               <p>city : {{ user?.address.city }}</p>
-              <v-btn icon>
+              <v-btn icon @click="show = !show">
                 <v-icon>mdi-map</v-icon>
               </v-btn>
             </div>
@@ -53,6 +62,19 @@ watch(data, () => {
           </v-card-text>
         </v-card>
       </v-col>
+      <v-dialog v-model="show" width="500">
+        <v-card min-width="500">
+          <v-card-title>Google Map</v-card-title>
+          <GoogleMap
+            :api-key="apiKey"
+            style="width: 100%; height: 500px"
+            :center="position"
+            :zoom="15"
+          >
+            <Marker :options="position" />
+          </GoogleMap>
+        </v-card>
+      </v-dialog>
     </v-row>
   </v-container>
 </template>

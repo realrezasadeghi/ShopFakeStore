@@ -8,6 +8,11 @@ export const actions: ActionTree<CartState, RootState> = {
     if (!cartItem) commit("ADD_TO_CART", product);
     else commit("INCREAMENT_ITEM_QUANTITY", cartItem);
   },
+  deleteItemCart: ({ commit, state }, product: CartModel) => {
+    let cart = [...state.cart];
+    cart = cart.filter((item) => item.id !== product.id);
+    commit("DELETE_ITEM_CART", cart);
+  },
   checkout: ({ commit }) => {
     commit("SET_CHECKOUT_STATUS", "success");
     commit("SET_CART", []);

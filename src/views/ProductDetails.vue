@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import {
   useGetProductByCategory,
@@ -7,6 +7,7 @@ import {
 } from "@/composables/product.composable";
 import ProductList from "@/components/app/products/ProductList.vue";
 import { useStore } from "vuex";
+import { useToast } from "vue-toastification";
 const { params } = useRoute();
 const { data, loading, fetch } = useGetProductById();
 const {
@@ -16,13 +17,15 @@ const {
 } = useGetProductByCategory();
 
 const store = useStore();
-
-const checkFavoriteItem = computed(() =>
-  store.getters["favorites/checkIsFavorite"](data.value)
-);
+const toast = useToast();
 
 const addToFavorites = () => {
   store.dispatch("favorites/addToFavorites", data.value);
+};
+
+const addToCart = () => {
+  store.dispatch("cart/addToCart", data.value);
+  toast.success(`${data.value?.title} successfull add to cart`);
 };
 
 onMounted(() => {
@@ -75,7 +78,12 @@ watch(data, () => {
                 </article>
                 <v-row dense class="mt-3">
                   <v-col cols="6">
-                    <v-btn block elevation="0" color="warning">
+                    <v-btn
+                      @click="addToCart"
+                      block
+                      elevation="0"
+                      color="warning"
+                    >
                       Add to cart
                     </v-btn>
                   </v-col>
@@ -86,11 +94,7 @@ watch(data, () => {
                       color="red"
                       @click.stop="addToFavorites"
                     >
-                      {{
-                        checkFavoriteItem
-                          ? "Added to favorite"
-                          : "Add to favorite"
-                      }}
+                      Add To Favorite
                     </v-btn>
                   </v-col>
                 </v-row>
