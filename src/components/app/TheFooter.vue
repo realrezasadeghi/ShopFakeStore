@@ -8,9 +8,12 @@ import { footers } from "@/core/enums/footer.enums";
       <v-btn
         v-for="item in footers"
         :key="item.key"
-        class="btn-footer elevation-0"
+        :to="item.to"
+        elevation="0"
+        color="grey"
+        link
       >
-        <router-link :to="item.to" class="link">{{ item.text }}</router-link>
+        {{ item.text }}
       </v-btn>
       <v-col class="py-4 text-center text-amber" cols="12">
         {{ new Date().getFullYear() }} — <b>Shopify</b>
@@ -23,9 +26,5 @@ import { footers } from "@/core/enums/footer.enums";
 .btn-footer {
   background: none;
   margin: 10px;
-}
-.link {
-  text-decoration: none;
-  color: white;
 }
 </style>

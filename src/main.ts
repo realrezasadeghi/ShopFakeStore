@@ -6,6 +6,7 @@ import vuetify from "./plugins/vuetify";
 import Toast from "vue-toastification";
 import { loadFonts } from "./plugins/webfontloader";
 import { toastPlugin } from "./plugins/toast";
+import VueGoogleMaps from "@fawmi/vue-google-maps";
 import "vue-toastification/dist/index.css";
 import "@/assets/styles/main.scss";
 
@@ -15,5 +16,5 @@ app.use(router);
 app.use(store);
 app.use(vuetify);
 app.use(Toast, toastPlugin);
-// app.use(VueGoogleMaps, { load: { key: process.env.VUE_APP_API_KEY } });
+app.use(VueGoogleMaps, { load: { key: "" } });
 app.mount("#app");

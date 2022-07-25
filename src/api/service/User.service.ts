@@ -1,6 +1,9 @@
 import { Axios } from "axios";
 import HttpClient from "../client/HttpClient";
-import { UserInterfaceModel } from "../models/User.interface";
+import {
+  UserInterfaceModel,
+  UserRegisterInterfaceModel,
+} from "../models/User.interface";
 import { Response } from "../types/Response.type";
 
 class UserService {
@@ -13,6 +16,12 @@ class UserService {
 
   getAllUser(): Response<UserInterfaceModel[]> {
     return this.http.get(this.baseUrl);
+  }
+
+  addUser(
+    body: UserRegisterInterfaceModel
+  ): Response<UserRegisterInterfaceModel> {
+    return this.http.post(this.baseUrl, body);
   }
 }
 

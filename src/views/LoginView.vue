@@ -45,22 +45,20 @@ const login = async () => {
                 type="password"
                 prepend-icon="mdi-lock"
               />
-              <v-row
-                justify-md="end"
-                justify-sm="end"
-                justify="center"
-                align="center"
-              >
-                <v-col cols="12" sm="5" md="4">
+              <v-row>
+                <v-col cols="12" md="6" sm="6">
                   <v-btn
-                    class="bg-amber"
-                    :disabled="loading"
-                    elevation="1"
-                    type="submit"
-                    block
+                    link
+                    to="/register"
+                    elevation="0"
+                    color="gray"
+                    outlined
                   >
-                    Login
+                    Create Account
                   </v-btn>
+                </v-col>
+                <v-col cols="12" md="6" sm="6">
+                  <v-btn type="submit" color="amber" block> Login </v-btn>
                 </v-col>
               </v-row>
             </v-form>

@@ -16,15 +16,11 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // const isAuthenticated = store.getters["user/getIsAuthenticated"];
-  // if (isAuthenticated) {
-  //   const { iat } = store.getters["user/getUser"];
-  //   if (iat * 1000 < Date.now()) {
-  //     localStorage.removeItem("token");
-  //     return { name: "Login" };
-  //   }
-  // }
-  // next({ name: to.name as string });
+  const isAuthenticated = store.getters["user/getIsAuthenticated"];
+  if (!isAuthenticated && to.path === "/profile") {
+    next("/login");
+  }
   next();
 });
+
 export default router;

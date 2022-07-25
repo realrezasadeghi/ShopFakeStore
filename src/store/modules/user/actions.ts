@@ -5,4 +5,7 @@ export const actions: ActionTree<UserState, RootState> = {
   addUser: ({ commit }, value: UserModel) => {
     commit("ADD_USER", value);
   },
+  clearUser: ({ commit }) => {
+    commit("CLEAR_USER");
+  },
 };

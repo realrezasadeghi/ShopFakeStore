@@ -3,23 +3,18 @@ import { computed, onMounted, reactive, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useGetAllUser } from "@/composables/user.composable";
 import { UserInterface } from "@/core/interfaces/User.interface";
-import { GoogleMap, Marker } from "vue3-google-map";
+import { useRouter } from "vue-router";
 
 const { data, loading, fetch } = useGetAllUser();
 
 const store = useStore();
+const router = useRouter();
 const user = ref<UserInterface>();
 const userInfo = computed(() => store.getters["user/getUser"]);
 const fullname = computed(
   () => user.value?.name.firstname + " " + user.value?.name.lastname
 );
-const apiKey = process.env.VUE_APP_API_KEY;
 const show = ref<boolean>(false);
-
-const position = reactive({
-  lat: user.value?.address.geolocation.lat,
-  lng: user.value?.address.geolocation.long,
-});
 
 onMounted(() => {
   fetch();
@@ -27,6 +22,12 @@ onMounted(() => {
 
 const getUserByUsername = (username: string): UserInterface => {
   return data.value.find((item) => item.username === username) as UserInterface;
+};
+
+const handleLogout = () => {
+  store.dispatch("user/clearUser");
+  localStorage.removeItem("token");
+  router.push("/");
 };
 
 watch(data, () => {
@@ -60,19 +61,24 @@ watch(data, () => {
             </div>
             <p>phone : {{ user?.phone }}</p>
           </v-card-text>
+          <v-card-actions>
+            <v-btn @click="handleLogout" color="red">
+              Logout
+              <v-icon>mdi-logout</v-icon>
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-col>
       <v-dialog v-model="show" width="500">
         <v-card min-width="500">
           <v-card-title>Google Map</v-card-title>
-          <GoogleMap
-            :api-key="apiKey"
+          <GMapMap
+            :center="{ lat: 51.093048, lng: 6.84212 }"
+            :zoom="7"
+            map-type-id="terrain"
             style="width: 100%; height: 500px"
-            :center="position"
-            :zoom="15"
           >
-            <Marker :options="position" />
-          </GoogleMap>
+          </GMapMap>
         </v-card>
       </v-dialog>
     </v-row>

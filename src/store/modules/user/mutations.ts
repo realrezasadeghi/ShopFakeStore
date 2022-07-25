@@ -6,4 +6,8 @@ export const mutations: MutationTree<UserState> = {
     state.user = payload;
     state.isAuthenticated = true;
   },
+  CLEAR_USER: (state) => {
+    state.isAuthenticated = false;
+    state.user = { user: null, iat: null };
+  },
 };

@@ -22,6 +22,11 @@ export const mainRoutes: RouteRecordRaw[] = [
     component: () => import("@/views/LoginView.vue"),
   },
   {
+    path: "register",
+    name: "Register",
+    component: () => import("@/views/RegisterView.vue"),
+  },
+  {
     path: "favorites",
     name: "Favorites",
     component: () => import("@/views/FavoritesView.vue"),

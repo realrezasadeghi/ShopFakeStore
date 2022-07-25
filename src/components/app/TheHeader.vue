@@ -9,6 +9,10 @@ const drawer = ref<boolean>(false);
 
 const info = computed(() => store.getters["user/getUser"]);
 
+const isAuthenticated = computed(
+  () => store.getters["user/getIsAuthenticated"]
+);
+
 const emit = defineEmits(["drawer"]);
 
 const toggleDrawer = () => {
@@ -23,21 +27,17 @@ const toggleDrawer = () => {
     <template v-if="$vuetify.display.smAndUp">
       <template v-for="link in links">
         <template v-if="link.text">
-          <v-btn :key="link.key" text>
-            <router-link :to="link.to" class="text-decoration-none text-black">
-              {{ link.text }}
-            </router-link>
+          <v-btn :key="link.key" link :to="link.to" elevation="0" color="gray">
+            {{ link.text }}
           </v-btn>
         </template>
         <template v-if="link.icon">
-          <v-btn :key="link.key" icon>
-            <router-link :to="link.to" class="text-black">
-              <v-icon>{{ link.icon }}</v-icon>
-            </router-link>
+          <v-btn :key="link.key" :to="link.to" link icon>
+            <v-icon>{{ link.icon }}</v-icon>
           </v-btn>
         </template>
       </template>
-      <template v-if="info">
+      <template v-if="isAuthenticated">
         <router-link to="profile" class="text-decoration-none">
           <div class="d-flex">
             <v-icon color="amber">mdi-account</v-icon>
