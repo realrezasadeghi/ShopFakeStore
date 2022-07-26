@@ -12,9 +12,11 @@ defineProps<PropsInterface>();
 <template>
   <v-card>
     <v-img
-      src="@/assets/images/electronics.jpg"
-      class="white--text align-end"
+      :src="require(`@/assets/images/${category.image}.jpg`)"
+      class="fill-height white--text align-end"
+      max-height="150"
       gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+      cover
     >
       <v-card-title class="text-white"> {{ category.title }}</v-card-title>
     </v-img>
